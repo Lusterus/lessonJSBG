@@ -5,13 +5,8 @@ class XhrQuest {
   constructor (url) {
     this.url = url;
   }
-  service(callback) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', this.url);
-    xhr.send();
-    xhr.onload = () => {
-      callback(JSON.parse(xhr.response))
-    }
+  service = () => {
+    return fetch(this.url);
   }
 }
 
@@ -19,18 +14,22 @@ let rec = new XhrQuest(GET_GOODS_ITEMS);
 let res2 = new XhrQuest(GET_GOODS_lIST);
 
 
-rec.service(dat => {
+rec.service()
+.then(dat => dat.json())
+.then(dat => {
   let listHtml =""
   dat.forEach(good => {
     let goodItem = `<div class="goods-item"><h3>${good.product_name}</h3><p>${good.price}</p></div>`;
     listHtml += goodItem;
   });
   document.querySelector('.goods-list').innerHTML = listHtml;
-});
+}).catch('error');
 
-res2.service(dat => {
+res2.service()
+.then(dat => dat.json())
+.then(dat => {
   document.querySelector('.itogPrice').innerHTML = `Сумма: ${dat.amount} Количество товара ${dat.countGoods}`;
-});
+})
 
 // class Basket {
 //   constructor() {
