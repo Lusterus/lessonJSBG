@@ -1,25 +1,60 @@
+"use strict"
+const url = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/'
 
-const goods = [
-    { title: 'Shirt', price: 150 },
-    { title: 'Socks', price: 50 },
-    { title: 'Jacket', price: 350 },
-    { title: 'Shoes', price: 250 },
-  ];
-  
- 
-  const renderGoodsItem = ({title, price}) => {
-    return `
-      <div class="goods-item">
-        <h3>${title}</h3>
-        <p>${price}</p>
-      </div>
-    `;
-  };
-  
-  const renderGoodsList = list => {
-    let goodsList = list.map(item => renderGoodsItem(item)).join("");
-    document.querySelector('.goods-list').innerHTML = goodsList;  
+function service (url) {
+  return fetch(url).then(dat => dat.json());
+}
+class BasketItems {
+  constructor(name,price) {
+    this.name = name;
+    this.price = price;
   }
-  
-  renderGoodsList(goods);
+  render() {
+    return `<div class="goods-item"><h3>${this.name}</h3><p>${this.price}</p></div>`;
+  }
+}
+class BasketInfo {
+  constructor (SumPrice,Countitems) {
+    this.SumPrice = SumPrice;
+    this.Countitems = Countitems;
+  }
+  render() {
+    return `Сумма: ${this.SumPrice } Количество товара ${this.Countitems}`
+  }
+
+}
+service(`${url}catalogData.json`)
+.then(dat => {
+  let listHtml ="";
+  dat.forEach(e => {
+    let ElBasket = new BasketItems(e.product_name,e.price);
+    listHtml += ElBasket.render();
+  });
+  document.querySelector('.goods-list').innerHTML = listHtml;
+})
+
+service(`${url}getBasket.json`)
+.then(dat => {
+  let BsInfo = new BasketInfo(dat.amount,dat.countGoods);
+  document.querySelector('.itogPrice').innerHTML = BsInfo.render();
+})
+
+// class Basket {
+//   constructor() {
+//   }
+//   clear(){}
+//   countItems() {}
+//   sumPrice() {}
+//   pay() {}
+// }
+// class ItemBasket {
+//   constructor() { 
+//   }
+//   outputTitle() {}
+//   add() {}
+//   del() {}
+// }
+
+
+
 
