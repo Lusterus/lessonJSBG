@@ -1,36 +1,49 @@
-const GET_GOODS_ITEMS = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/catalogData.json'
-const GET_GOODS_lIST = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/getBasket.json'
+const url = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/'
 
-class XhrQuest {
-  constructor (url) {
-    this.url = url;
-  }
-  service(callback) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', this.url);
-    xhr.send();
-    xhr.onload = () => {
-      callback(JSON.parse(xhr.response))
-    }
+function service(url,callback) {
+  let xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  xhr.send();
+  xhr.onload = () => {
+    callback(JSON.parse(xhr.response))
   }
 }
+    
+class BasketItems {
+  constructor (name,price) {
+    this.name = name;
+    this.price = price;
+  }
+  render () {
+    return `<div class="goods-item"><h3>${this.name}</h3><p>${this.price}</p></div>`
+  };
+}
 
-let rec = new XhrQuest(GET_GOODS_ITEMS);
-let res2 = new XhrQuest(GET_GOODS_lIST);
-
-
-rec.service(dat => {
+class BasketInfo  {
+  constructor(SumPrice, CountPrice) {
+    this.SumPrice= SumPrice;
+    this.CountPrice = CountPrice;
+  }
+  render () {
+    return `Сумма: ${this.SumPrice} Количество товара ${this.CountPrice}`
+  }
+}
+service(`${url}catalogData.json`,dat => {
   let listHtml =""
   dat.forEach(good => {
-    let goodItem = `<div class="goods-item"><h3>${good.product_name}</h3><p>${good.price}</p></div>`;
-    listHtml += goodItem;
+    let goodItem = new BasketItems(good.product_name,good.price);
+    listHtml += goodItem.render();
   });
   document.querySelector('.goods-list').innerHTML = listHtml;
 });
 
-res2.service(dat => {
-  document.querySelector('.itogPrice').innerHTML = `Сумма: ${dat.amount} Количество товара ${dat.countGoods}`;
+
+service(`${url}getBasket.json`,dat => {
+  let inf = new BasketInfo(dat.amount,dat.countGoods);
+  document.querySelector('.itogPrice').innerHTML = inf.render();
 });
+
+
 
 // class Basket {
 //   constructor() {
