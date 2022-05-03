@@ -1,34 +1,42 @@
-const GET_GOODS_ITEMS = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/catalogData.json'
-const GET_GOODS_lIST = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/getBasket.json'
+"use strict"
+const url = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/'
 
-class XhrQuest {
-  constructor (url) {
-    this.url = url;
+function service (url) {
+  return fetch(url).then(dat => dat.json());
+}
+class BasketItems {
+  constructor(name,price) {
+    this.name = name;
+    this.price = price;
   }
-  service = () => {
-    return fetch(this.url);
+  render() {
+    return `<div class="goods-item"><h3>${this.name}</h3><p>${this.price}</p></div>`;
   }
 }
+class BasketInfo {
+  constructor (SumPrice,Countitems) {
+    this.SumPrice = SumPrice;
+    this.Countitems = Countitems;
+  }
+  render() {
+    return `Сумма: ${this.SumPrice } Количество товара ${this.Countitems}`
+  }
 
-let rec = new XhrQuest(GET_GOODS_ITEMS);
-let res2 = new XhrQuest(GET_GOODS_lIST);
-
-
-rec.service()
-.then(dat => dat.json())
+}
+service(`${url}catalogData.json`)
 .then(dat => {
-  let listHtml =""
-  dat.forEach(good => {
-    let goodItem = `<div class="goods-item"><h3>${good.product_name}</h3><p>${good.price}</p></div>`;
-    listHtml += goodItem;
+  let listHtml ="";
+  dat.forEach(e => {
+    let ElBasket = new BasketItems(e.product_name,e.price);
+    listHtml += ElBasket.render();
   });
   document.querySelector('.goods-list').innerHTML = listHtml;
-}).catch('error');
+})
 
-res2.service()
-.then(dat => dat.json())
+service(`${url}getBasket.json`)
 .then(dat => {
-  document.querySelector('.itogPrice').innerHTML = `Сумма: ${dat.amount} Количество товара ${dat.countGoods}`;
+  let BsInfo = new BasketInfo(dat.amount,dat.countGoods);
+  document.querySelector('.itogPrice').innerHTML = BsInfo.render();
 })
 
 // class Basket {
