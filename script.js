@@ -1,12 +1,9 @@
 "use strict"
 const url = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/'
 
-function service (url) {
-  return fetch(url).then(dat => dat.json());
-}
 class BasketItems {
-  constructor(name,price) {
-    this.name = name;
+  constructor({product_name,price}) {
+    this.name = product_name;
     this.price = price;
   }
   render() {
@@ -21,22 +18,52 @@ class BasketInfo {
   render() {
     return `Сумма: ${this.SumPrice } Количество товара ${this.Countitems}`
   }
-
 }
-service(`${url}catalogData.json`)
-.then(dat => {
-  let listHtml ="";
-  dat.forEach(e => {
-    let ElBasket = new BasketItems(e.product_name,e.price);
-    listHtml += ElBasket.render();
-  });
-  document.querySelector('.goods-list').innerHTML = listHtml;
-})
 
-service(`${url}getBasket.json`)
-.then(dat => {
-  let BsInfo = new BasketInfo(dat.amount,dat.countGoods);
-  document.querySelector('.itogPrice').innerHTML = BsInfo.render();
+class Control {
+  constructor(url) {
+    this.url = url;
+    this.mItem =[];
+    this.filteredItems = [];
+  }
+  service (cb) {
+    fetch(this.url)
+    .then(dat => dat.json())
+    .then(dat => {
+      this.mItem = dat;
+      this.filteredItems = dat;
+      cb()
+      
+    });
+    
+  }
+  render() {
+    const goods = this.filteredItems.map(item => {
+      const goodItem = new BasketItems(item);
+      return goodItem.render()
+    }).join('');
+    document.querySelector('.goods-list').innerHTML = goods;
+  }
+  filterItems(value) {
+    this.filteredItems = this.mItem.filter(({ product_name }) => {
+      return product_name.match(new RegExp(value, 'gui'))
+    })
+  } 
+  info() {
+    let ElBasket = new BasketInfo(this.mItem.amount,this.mItem.countGoods);
+    document.querySelector('.itogPrice').innerHTML = ElBasket.render();
+  }
+} 
+let contr = new Control(`${url}catalogData.json`);
+contr.service(() => contr.render()); 
+
+let inform = new Control(`${url}getBasket.json`);
+inform.service(() => inform.info()); 
+
+document.querySelector('#search-button').addEventListener('click', () => {
+  const value = document.querySelector('#goods-search').value;
+  contr.filterItems(value);
+  contr.render();
 })
 
 // class Basket {
