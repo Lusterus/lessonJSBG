@@ -6,6 +6,7 @@ const app = new Vue({
     mItemInfo: [],
     filteredItems: [],  
     searchLine: '',
+    isVisibleCart: true
   },
   methods: {
     service (url) {
