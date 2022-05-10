@@ -1,25 +1,40 @@
+"use strict"
+const app = new Vue({
+  el: "#app",
+  data: {
+    mItem: [],
+    mItemInfo: [],
+    filteredItems: [],  
+    searchLine: '',
+    isVisibleCart: true
+  },
+  methods: {
+    service (url) {
+      const partUrl = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/';
+      fetch(`${partUrl}${url}`)
+      .then(dat => dat.json())
+      .then(dat => {
+        this.mItem = dat;
+        this.filteredItems = dat;
+      });
+    },
+    serviceInfo (url) {
+      const partUrl = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/';
+      fetch(`${partUrl}${url}`)
+      .then(dat => dat.json())
+      .then(dat => {
+        this.mItemInfo = dat;
+      });
+    },
+    serchItems () {
+      this.filteredItems = this.mItem.filter(({ product_name }) => {
+        return product_name.match(new RegExp(this.searchLine, 'gui'))
+      })
+    }
 
-const goods = [
-    { title: 'Shirt', price: 150 },
-    { title: 'Socks', price: 50 },
-    { title: 'Jacket', price: 350 },
-    { title: 'Shoes', price: 250 },
-  ];
-  
- 
-  const renderGoodsItem = ({title, price}) => {
-    return `
-      <div class="goods-item">
-        <h3>${title}</h3>
-        <p>${price}</p>
-      </div>
-    `;
-  };
-  
-  const renderGoodsList = list => {
-    let goodsList = list.map(item => renderGoodsItem(item)).join("");
-    document.querySelector('.goods-list').innerHTML = goodsList;  
+  }, 
+  mounted() {
+    this.service(`catalogData.json`);
+    this.serviceInfo(`getBasket.json`);
   }
-  
-  renderGoodsList(goods);
-
+});
