@@ -12,19 +12,39 @@
       <input type="text" id = "goods-search" v-model="searchLine">
       <input type="button" value="Искать" id = "search-button" @click="serchItems">
       <button class="cart-button cart-button_style " type="button">Корзина</button>
-      <div class="itogPrice">
-         Сумма: {{ mItemInfo.amount }} Количество товара {{ mItemInfo.countGoods }}
-      </div>
    </header>
-   <main class="main main_position center">
-      <div class="goods-list">
-         <div class="goods-item" v-for ="good in filteredItems">
-            <h3>{{ good.product_name }}</h3>
-            <p>{{ good.price }}</p>
+   <main class = "center">
+      <div class="basket">
+         <div class="goods-list" v-for ="good in filteredItems">
+            <div class="goods-item">
+            </div>
+            <div class="goods-name">
+               <h3>{{ good.product_name }}</h3>
+            </div>
+            <div class="goods-count">
+               <div class="goods-count__input">
+                  <div class="goods-count__pl">
+                     +
+                  </div>
+                  <div class="goods-count__pl">
+                     кол
+                  </div>
+                  <div class="goods-count__pl">
+                     -
+                  </div>                 
+               </div>
+            </div>
+            <div class="goods-item__price">
+               <p>Цена: {{ good.price }}</p>
+            </div>
          </div>
-      </div>
-      <div v-if="filteredItems.length == 0">Нет данных</div>
+         <div v-if="filteredItems.length == 0">Нет данных</div>
+   </div>
+   <div class="itogPrice">
+      Сумма: {{ mItemInfo.amount }} Количество товара {{ mItemInfo.countGoods }}
+   </div>
    </main>
+
 </div>
 <script src="script.js"></script>
 </body>
