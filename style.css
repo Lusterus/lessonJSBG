@@ -61,6 +61,7 @@
 }
 
 .basket {
+  position: relative;
   margin-top: 50px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -90,5 +91,12 @@
   display: flex;
   -ms-flex-pack: distribute;
       justify-content: space-around;
+}
+
+.cansel {
+  cursor: pointer;
+  font-size: 30px;
+  position: absolute;
+  right: 10px;
 }
 /*# sourceMappingURL=style.css.map */

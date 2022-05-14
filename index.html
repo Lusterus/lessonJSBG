@@ -9,14 +9,15 @@
 <body>
 <div id="app">
    <header class ="header header_flex header_style center">
-      <search></search>
-      <button class="cart-button cart-button_style " type="button">Корзина</button>
+      <search v-model="searchLine" @go-filter="serchItems" v-if="isVisibleCart"></search>
+      <button class="cart-button cart-button_style " type="button" @click = "hideBasket">Корзина</button>
    </header>
-   <main class = "center">
+   <main class = "center" v-if="isVisibleCart">
       <div class="basket">
+         <div class="cansel" @click = "hideBasket">&times;</div>
          <goods-list :goods="filteredItems"></goods-list>
          <div v-if="filteredItems.length == 0">Нет данных</div>
-   </div>
+      </div>
    <div class="itogPrice">
       Сумма: {{ mItemInfo.amount }} Количество товара {{ mItemInfo.countGoods }}
    </div>

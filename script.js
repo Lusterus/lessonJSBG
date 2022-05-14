@@ -34,10 +34,17 @@ Vue.component('goods-item', {
   </div>`
 });
 Vue.component('search', {
+  props: ['value'],
   template: `
   <div class="seach">
-    <input type="text" id = "goods-search" v-model="searchLine">
-    <input type="button" value="Искать" id = "search-button" @click="serchItems">
+    <input 
+    type="text" id = "goods-search" 
+    :value="value"
+    @input="$emit('input', $event.target.value)"
+    >
+    <input
+      type="button" value="Искать" id = "search-button" @click="$emit('go-filter')"
+    >
   </div>
   `
 });
@@ -73,6 +80,9 @@ const app = new Vue({
       this.filteredItems = this.mItem.filter(({ product_name }) => {
         return product_name.match(new RegExp(this.searchLine, 'gui'))
       })
+    },
+    hideBasket () {
+      this.isVisibleCart = !this.isVisibleCart;
     }
 
   }, 
