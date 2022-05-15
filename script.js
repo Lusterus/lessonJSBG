@@ -1,4 +1,6 @@
 "use strict"
+
+
 Vue.component('goods-list', {
   props: ['goods'],
   template: `
