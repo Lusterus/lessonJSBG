@@ -4,28 +4,48 @@
 .center
     padding: 0 calc( 50% - 570px )        
 .goods-list
-    display: flex
-    justify-content: space-between
-    gap: 50px
-    flex-wrap: wrap
-.goods-item
+    padding: 20px
     display: flex
     flex-direction: column
-    justify-content: center
-    align-items: center
-    min-width: 300px
-    min-height: 200px
+    justify-content: space-between
+    gap: 20px
+.goods-image
+    width: 300px
+    height: 200px
     border: 2px black solid
     background-color: yellow
-.main_position 
-    margin-top: 50px  
 .header_flex 
     display: flex
-    justify-content: flex-end 
-    align-items: center
+    flex-direction: column
+    justify-content: space-around
+    align-items: flex-end
 .header_style
     min-height: 80px
     background: black       
 .cart-button_style
     height: 30px
     width: 100px
+.itogPrice 
+    min-width: 100px
+    text-align: right  
+    font-size: 18px
+.basket
+    position: relative
+    margin-top: 50px
+    display: flex
+    flex-direction: column
+    gap: 30px
+    border: 1px black solid
+.goods-count__input
+    display: flex
+    gap: 10px
+.goods-item__price 
+    min-width: 150px
+.goods-item
+    display: flex
+    justify-content: space-around
+.cansel
+    cursor: pointer
+    font-size: 30px
+    position: absolute
+    right: 10px 

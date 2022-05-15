@@ -8,18 +8,7 @@
 }
 
 .goods-list {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  gap: 50px;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-}
-
-.goods-item {
+  padding: 20px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -27,32 +16,32 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  min-width: 300px;
-  min-height: 200px;
-  border: 2px black solid;
-  background-color: yellow;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  gap: 20px;
 }
 
-.main_position {
-  margin-top: 50px;
+.goods-image {
+  width: 300px;
+  height: 200px;
+  border: 2px black solid;
+  background-color: yellow;
 }
 
 .header_flex {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
 }
 
 .header_style {
@@ -63,5 +52,51 @@
 .cart-button_style {
   height: 30px;
   width: 100px;
+}
+
+.itogPrice {
+  min-width: 100px;
+  text-align: right;
+  font-size: 18px;
+}
+
+.basket {
+  position: relative;
+  margin-top: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 30px;
+  border: 1px black solid;
+}
+
+.goods-count__input {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px;
+}
+
+.goods-item__price {
+  min-width: 150px;
+}
+
+.goods-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.cansel {
+  cursor: pointer;
+  font-size: 30px;
+  position: absolute;
+  right: 10px;
 }
 /*# sourceMappingURL=style.css.map */
