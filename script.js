@@ -56,17 +56,18 @@ const app = new Vue({
     mItemInfo: [],
     filteredItems: [],  
     searchLine: '',
-    isVisibleCart: true
+    isVisibleCart: true,
+    errorsTitle: '',
   },
   methods: {
     service (url) {
       const partUrl = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/';
       fetch(`${partUrl}${url}`)
       .then(dat => dat.json())
-      .then(dat => {
+      .then(dat => {  
         this.mItem = dat;
         this.filteredItems = dat;
-      });
+      }).catch(dat => this.errorsTitle = "dat");
     },
     serviceInfo (url) {
       const partUrl = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/';
@@ -74,7 +75,7 @@ const app = new Vue({
       .then(dat => dat.json())
       .then(dat => {
         this.mItemInfo = dat;
-      });
+      }).catch(dat => this.errorsTitle = "dat");
     },
     serchItems () {
       this.filteredItems = this.mItem.filter(({ product_name }) => {
