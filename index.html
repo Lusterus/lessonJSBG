@@ -4,14 +4,32 @@
    <meta charset="UTF-8">
    <title>eShop</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
 </head>
 <body>
-<header class ="header header_flex header_style center">
-   <button class="cart-button cart-button_style " type="button">Корзина</button>
-</header>
-<main class="main main_position center">
-   <div class="goods-list"></div>
-</main>
+<div id="app" class="content">
+   <header class ="header header_flex header_style center">
+      <search v-model="searchLine" @go-filter="serchItems" v-if="isVisibleCart"></search>
+      <button class="cart-button cart-button_style " type="button" @click = "hideBasket">Корзина</button>
+   </header>
+   <main class = "center" >
+      <div class="gatalog">
+         <catalog-list :goods="mItemCatalog"></catalog-list>
+         <div v-if="mItemCatalog.length == 0">Нет данных</div>
+      </div>
+   </main>   
+   <main class = "basket_container center" v-if="isVisibleCart">
+      <div class="basket">
+         <div class="cansel" @click = "hideBasket">&times;</div>
+         <goods-list :goods="filteredItems"></goods-list>
+         <div v-if="filteredItems.length == 0">Нет данных</div>
+      </div>
+   <div class="itogPrice">
+      Сумма: {{ mItemInfo.amount }} Количество товара {{ mItemInfo.countGoods }}
+   </div>
+   </main>
+
+</div>
 <script src="script.js"></script>
 </body>
 </html>  
