@@ -35,6 +35,32 @@ Vue.component('goods-item', {
     </div>   
   </div>`
 });
+
+
+Vue.component('catalog-list', {
+  props: ['goods'],
+  template: `
+    <div class="catalog-list">
+      <catalog-item :good="gooditem"  :key = "gooditem.id_product" v-for="gooditem in goods"></catalog-item>
+    </div>`
+});
+Vue.component('catalog-item', {
+  props:['good'],
+  template: ` 
+  <div class = "catalog-item" >
+      <div class="catalog-name">
+        <h3>{{ good.product_name }}</h3>
+     </div>
+     <div class="catalog-item__price">
+     <p>Цена: {{ good.price }}</p>
+   </div>   
+   <input class = "add_basket" type="submit" value = "Добавить в корзину">
+  </div>`
+});
+
+
+
+
 Vue.component('search', {
   props: ['value'],
   template: `
@@ -57,13 +83,14 @@ const app = new Vue({
     mItem: [],
     mItemInfo: [],
     filteredItems: [],  
+    mItemCatalog: [],
     searchLine: '',
     isVisibleCart: true,
     errorsTitle: '',
   },
   methods: {
     service (url) {
-      const partUrl = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/';
+      const partUrl = 'http://localhost:8000/';
       fetch(`${partUrl}${url}`)
       .then(dat => dat.json())
       .then(dat => {  
@@ -71,6 +98,14 @@ const app = new Vue({
         this.filteredItems = dat;
       }).catch(dat => this.errorsTitle = "dat");
     },
+    serviceCatalog (url) {
+      const partUrl = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/';
+      fetch(`${partUrl}${url}`)
+      .then(dat => dat.json())
+      .then(dat => {  
+        this.mItemCatalog = dat;
+      }).catch(dat => this.errorsTitle = "dat");
+    },    
     serviceInfo (url) {
       const partUrl = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/';
       fetch(`${partUrl}${url}`)
@@ -90,8 +125,9 @@ const app = new Vue({
 
   }, 
   mounted() {
-    this.service(`catalogData.json`);
+    this.service(`goods`);
     this.serviceInfo(`getBasket.json`);
+    this.serviceCatalog(`catalogData.json`);
   },
 });
 

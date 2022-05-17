@@ -7,12 +7,18 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
 </head>
 <body>
-<div id="app">
+<div id="app" class="content">
    <header class ="header header_flex header_style center">
       <search v-model="searchLine" @go-filter="serchItems" v-if="isVisibleCart"></search>
       <button class="cart-button cart-button_style " type="button" @click = "hideBasket">Корзина</button>
    </header>
-   <main class = "center" v-if="isVisibleCart">
+   <main class = "center" >
+      <div class="gatalog">
+         <catalog-list :goods="mItemCatalog"></catalog-list>
+         <div v-if="mItemCatalog.length == 0">Нет данных</div>
+      </div>
+   </main>   
+   <main class = "basket_container center" v-if="isVisibleCart">
       <div class="basket">
          <div class="cansel" @click = "hideBasket">&times;</div>
          <goods-list :goods="filteredItems"></goods-list>
