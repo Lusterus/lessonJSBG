@@ -15,7 +15,7 @@ Vue.component('goods-item', {
     <div class="goods-image">
     </div>
     <div class="goods-name">
-      <h3>{{ good.product_name }}</h3>
+      <h3>{{ good.data.product_name }}</h3>
     </div>
     <div class="goods-count">
       <div class="goods-count__input">
@@ -23,7 +23,7 @@ Vue.component('goods-item', {
             +
           </div>
           <div class="goods-count__pl">
-            кол
+            {{good.count}}
           </div>
           <div class="goods-count__pl">
             -
@@ -31,7 +31,7 @@ Vue.component('goods-item', {
       </div>
     </div>
     <div class="goods-item__price">
-      <p>Цена: {{ good.price }}</p>
+      <p>Цена: {{ good.total }}</p>
     </div>   
   </div>`
 });
@@ -41,7 +41,7 @@ Vue.component('catalog-list', {
   props: ['goods'],
   template: `
     <div class="catalog-list">
-      <catalog-item :good="gooditem"  @add-basket = "$emit('add-basket',$event)"  :key = "gooditem.id_product" v-for="gooditem in goods"></catalog-item>
+      <catalog-item :good="gooditem"  @add-basket = "$emit('add-basket', $event)"  :key = "gooditem.id_product" v-for="gooditem in goods"></catalog-item>
     </div>`
 }); //@add-basket = "(id) => { $emit('add-basket',id)}" Можно вот так передать параметр вместо $event
 Vue.component('catalog-item', {
@@ -90,7 +90,7 @@ const app = new Vue({
   },
   methods: {
     service (url_path,mas) {
-       fetch(url_path)
+      return fetch(url_path)
       .then(dat => dat.json()
       .then(dat => { 
         if (mas == 1) {
@@ -104,13 +104,21 @@ const app = new Vue({
  
       }).catch(dat => this.errorsTitle = "dat")
       )
-
-
-
     },
-    addBasket (s) {
-      debugger;
-      alert(s);
+    servisePost (url_path, body) {
+       return fetch(url_path, {
+        method: 'POST',
+        headers: {
+          "Content-type": 'application/json'
+        },
+        body: JSON.stringify(body)
+      })
+    },
+    addBasket (idItem) {
+      this.servisePost('http://localhost:8000/goods',{
+        id: idItem,
+      });
+
     },
     serchItems () {
       this.filteredItems = this.mItem.filter(({ product_name }) => {
@@ -124,8 +132,8 @@ const app = new Vue({
   }, 
   mounted() {
     this.service(`http://localhost:8000/goods`,1)
-    this.service(`${this.ConstUrl}getBasket.json`,2)
-    this.service(`${this.ConstUrl}catalogData.json`,3)
+    //this.service(`${this.ConstUrl}getBasket.json`,2)
+    this.service(`http://localhost:8000/goodsBasket`,3)
   },
 });
 
