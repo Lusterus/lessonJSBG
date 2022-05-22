@@ -21,7 +21,7 @@
    <main class = "basket_container center" v-if="isVisibleCart">
       <div class="basket">
          <div class="cansel" @click = "hideBasket">&times;</div>
-         <goods-list :goods="filteredItems"></goods-list>
+         <goods-list :goods="filteredItems" @add-basket = "addBasket"></goods-list>
          <div v-if="filteredItems.length == 0">Нет данных</div>
       </div>
    <!-- <div class="itogPrice">

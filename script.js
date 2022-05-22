@@ -5,7 +5,7 @@ Vue.component('goods-list', {
   props: ['goods'],
   template: `
     <div class="goods-list">
-      <goods-item :good="gooditem"  :key = "gooditem.id_product" v-for="gooditem in goods"></goods-item>
+      <goods-item :good="gooditem" @add-basket = "$emit('add-basket', $event)" :key = "gooditem.id_product" v-for="gooditem in goods"></goods-item>
     </div>`
 });
 Vue.component('goods-item', {
@@ -19,7 +19,7 @@ Vue.component('goods-item', {
     </div>
     <div class="goods-count">
       <div class="goods-count__input">
-          <div class="goods-count__pl">
+          <div class="goods-count__pl" @click = "$emit('add-basket', good.id_product)">
             +
           </div>
           <div class="goods-count__pl">
@@ -84,7 +84,7 @@ const app = new Vue({
     filteredItems: [],  
     mItemCatalog: [],
     searchLine: '',
-    isVisibleCart: false,
+    isVisibleCart: true,
     errorsTitle: '',
     ConstUrl: `https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/`
   },

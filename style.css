@@ -146,4 +146,8 @@
   top: 50%;
   position: absolute;
 }
+
+.goods-count__pl {
+  cursor: pointer;
+}
 /*# sourceMappingURL=style.css.map */
