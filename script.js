@@ -41,25 +41,22 @@ Vue.component('catalog-list', {
   props: ['goods'],
   template: `
     <div class="catalog-list">
-      <catalog-item :good="gooditem"  :key = "gooditem.id_product" v-for="gooditem in goods"></catalog-item>
+      <catalog-item :good="gooditem"  @add-basket = "$emit('add-basket',$event)"  :key = "gooditem.id_product" v-for="gooditem in goods"></catalog-item>
     </div>`
-});
+}); //@add-basket = "(id) => { $emit('add-basket',id)}" Можно вот так передать параметр вместо $event
 Vue.component('catalog-item', {
   props:['good'],
-  template: ` 
+  template: `   
   <div class = "catalog-item" >
       <div class="catalog-name">
         <h3>{{ good.product_name }}</h3>
      </div>
      <div class="catalog-item__price">
-     <p>Цена: {{ good.price }}</p>
+     <p>Цена: {{ good.price  }}</p>
    </div>   
-   <input class = "add_basket" type="submit" value = "Добавить в корзину">
+   <input class = "add_basket" type="submit" @click = "$emit('add-basket',good.id_product)" value = "Добавить в корзину">
   </div>`
 });
-
-
-
 
 Vue.component('search', {
   props: ['value'],
@@ -77,6 +74,8 @@ Vue.component('search', {
   `
 });
 
+
+
 const app = new Vue({
   el: "#app",
   data: {
@@ -85,34 +84,33 @@ const app = new Vue({
     filteredItems: [],  
     mItemCatalog: [],
     searchLine: '',
-    isVisibleCart: true,
+    isVisibleCart: false,
     errorsTitle: '',
+    ConstUrl: `https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/`
   },
   methods: {
-    service (url) {
-      const partUrl = 'http://localhost:8000/';
-      fetch(`${partUrl}${url}`)
-      .then(dat => dat.json())
-      .then(dat => {  
-        this.mItem = dat;
-        this.filteredItems = dat;
-      }).catch(dat => this.errorsTitle = "dat");
+    service (url_path,mas) {
+       fetch(url_path)
+      .then(dat => dat.json()
+      .then(dat => { 
+        if (mas == 1) {
+          this.mItem = dat;
+          this.filteredItems = dat;
+        } else if (mas == 2) {
+          this.mItemInfo = dat;
+        } else if (mas == 3) {
+          this.mItemCatalog = dat;
+        } 
+ 
+      }).catch(dat => this.errorsTitle = "dat")
+      )
+
+
+
     },
-    serviceCatalog (url) {
-      const partUrl = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/';
-      fetch(`${partUrl}${url}`)
-      .then(dat => dat.json())
-      .then(dat => {  
-        this.mItemCatalog = dat;
-      }).catch(dat => this.errorsTitle = "dat");
-    },    
-    serviceInfo (url) {
-      const partUrl = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/';
-      fetch(`${partUrl}${url}`)
-      .then(dat => dat.json())
-      .then(dat => {
-        this.mItemInfo = dat;
-      }).catch(dat => this.errorsTitle = "dat");
+    addBasket (s) {
+      debugger;
+      alert(s);
     },
     serchItems () {
       this.filteredItems = this.mItem.filter(({ product_name }) => {
@@ -125,9 +123,9 @@ const app = new Vue({
 
   }, 
   mounted() {
-    this.service(`goods`);
-    this.serviceInfo(`getBasket.json`);
-    this.serviceCatalog(`catalogData.json`);
+    this.service(`http://localhost:8000/goods`,1)
+    this.service(`${this.ConstUrl}getBasket.json`,2)
+    this.service(`${this.ConstUrl}catalogData.json`,3)
   },
 });
 

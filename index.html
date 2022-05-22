@@ -14,7 +14,7 @@
    </header>
    <main class = "center" >
       <div class="gatalog">
-         <catalog-list :goods="mItemCatalog"></catalog-list>
+         <catalog-list :goods="mItemCatalog" @add-basket = "addBasket"></catalog-list>
          <div v-if="mItemCatalog.length == 0">Нет данных</div>
       </div>
    </main>   
